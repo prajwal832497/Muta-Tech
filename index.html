@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GenomeScan AI — Premium genomic variant analysis dashboard powered by DNABERT-2.">
+<title>GenomeScan AI — Variant Analysis</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- Muta-Tech Loading Screen -->
+<div id="muta-loader" class="muta-loader">
+  <div class="muta-content">
+    <div class="muta-logo">Muta-Tech</div>
+    <div class="muta-sub">GenomeScan AI Initialization</div>
+    <div class="muta-progress">
+      <div class="muta-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Global Cursor Glow -->
+<div id="cursor-glow"></div>
+
+<!-- Video Background -->
+<div id="video-bg-wrap">
+  <video id="video-bg" autoplay muted loop playsinline disablePictureInPicture>
+    <source src="assets/bg-video.mp4" type="video/mp4">
+  </video>
+  <div id="video-overlay"></div>
+</div>
+
+<!-- Header -->
+<header class="hdr">
+  <div class="logo">
+    <svg class="logo-svg" viewBox="0 0 30 30" fill="none">
+      <path d="M7 4 Q15 10 23 4" stroke="var(--acc)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M7 26 Q15 20 23 26" stroke="var(--acc)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M9.5 15 Q15 11 20.5 15" stroke="var(--path)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      <line x1="7" y1="4" x2="7" y2="26" stroke="var(--acc)" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+      <line x1="23" y1="4" x2="23" y2="26" stroke="var(--acc)" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+      <circle cx="7" cy="9.5" r="2" fill="var(--acc)"/><circle cx="23" cy="9.5" r="2" fill="var(--acc)"/>
+      <circle cx="7" cy="15" r="2" fill="var(--path)"/><circle cx="23" cy="15" r="2" fill="var(--path)"/>
+      <circle cx="7" cy="20.5" r="2" fill="var(--ben)"/><circle cx="23" cy="20.5" r="2" fill="var(--ben)"/>
+    </svg>
+    <div class="logo-name">Genome<em>Scan</em> AI</div>
+    <span class="logo-pill">v1.0</span>
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-meta">DNABERT-2 · GRCh38</span>
+    <button class="btn btn-gh" id="theme-btn" onclick="toggleTheme()" style="padding: 6px 10px; font-size: .8rem">☀️</button>
+    <button class="btn btn-gh" onclick="toggleAbout()">📖 About</button>
+    <button class="btn btn-gh" onclick="document.getElementById('fab').click()">📄 Report</button>
+  </div>
+</header>
+
+<!-- Layout -->
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sb">
+    <div>
+      <div class="sec-lbl" style="margin-bottom:.55rem">Analysis Mode</div>
+      <div class="tabs">
+        <button class="tab on" id="t-single" onclick="switchTab('single')">Single Variant</button>
+        <button class="tab" id="t-vcf" onclick="switchTab('vcf')">VCF Batch</button>
+      </div>
+    </div>
+
+    <div id="f-single" style="display:flex;flex-direction:column;gap:.65rem">
+      <div class="fg"><label class="fl">Chromosome</label><input class="fi" id="i-chr" placeholder="chr17" autocomplete="off"></div>
+      <div class="fg"><label class="fl">Position (GRCh38)</label><input class="fi" id="i-pos" placeholder="43094464" autocomplete="off"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Reference</label><input class="fi" id="i-ref" placeholder="G" maxlength="1" autocomplete="off"></div>
+        <div class="fg"><label class="fl">Alternate</label><input class="fi" id="i-alt" placeholder="A" maxlength="1" autocomplete="off"></div>
+      </div>
+      <div class="fval" id="fval">⚠ Please check your input</div>
+    </div>
+
+    <div id="f-vcf" style="display:none">
+      <div class="vcf-drop active" id="vdrop">
+        <div class="vcf-icon">🧬</div>
+        <div class="vcf-txt">Drag & drop a .vcf file here<br>or click to browse</div>
+        <input type="file" id="vfile" accept=".vcf" style="display:none">
+      </div>
+    </div>
+
+    <button class="btn-az" id="azBtn" onclick="runAnalysis()">
+      <span id="az-lbl">Analyze Variant</span>
+      <div class="spin" id="az-spin"></div>
+    </button>
+
+    <div class="divider"></div>
+
+    <div>
+      <div class="sec-lbl" style="margin-bottom:.55rem">Quick Examples</div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <button class="ex-btn" id="ex-brca1" onclick="loadEx('BRCA1')">
+          <div><div class="ex-g">BRCA1</div><div class="ex-sub">chr17:43094464 G→A</div></div>
+          <span class="tag tag-p">Pathogenic</span>
+        </button>
+        <button class="ex-btn" id="ex-tp53" onclick="loadEx('TP53')">
+          <div><div class="ex-g">TP53</div><div class="ex-sub">chr17:7674220 C→T</div></div>
+          <span class="tag tag-lp">Likely Path.</span>
+        </button>
+        <button class="ex-btn" id="ex-cftr" onclick="loadEx('CFTR')">
+          <div><div class="ex-g">CFTR</div><div class="ex-sub">chr7:117548628 G→A</div></div>
+          <span class="tag tag-lp">Likely Path.</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="sb-meta">
+      <div>Reference Genome: GRCh38/hg38</div>
+      <div>Model: DNABERT-2 × 2 (Path + Disease)</div>
+      <div>Disease Classes: 15 categories</div>
+      <div>Context window: ±64 bp</div>
+      <div class="sb-warn"><span>⚠</span> Research use only</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Welcome -->
+    <div class="welcome" id="welcome">
+      <div class="w-icon">🧬</div>
+      <div class="w-h">Enter a variant to begin analysis</div>
+      <div class="w-s">Input genomic coordinates or select a quick example<br>to run AI-powered pathogenicity classification</div>
+    </div>
+
+    <!-- Status -->
+    <div class="status" id="status">
+      <div class="sdot"></div>
+      <span id="s-txt">Ready</span>
+      <span class="s-time" id="s-time"></span>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="results">
+
+      <!-- Row 1: Pathogenicity + Disease -->
+      <div class="g2">
+        <!-- Pathogenicity -->
+        <div class="card" id="pathogenicity-panel">
+          <div class="ch">
+            <div class="ct">Pathogenicity Score</div>
+            <span class="cb" id="conf-badge" style="background:var(--acc-dim);color:var(--acc)">Model Confidence</span>
+          </div>
+          <div class="pp">
+            <div class="gauge-wrap"><canvas id="gcv" width="190" height="124"></canvas>
+              <div class="gauge-ctr"><div class="g-score" id="g-sc">--</div><div class="g-unit">/ 100</div></div>
+            </div>
+            <div id="vbadge" class="vbadge vv">UNCERTAIN</div>
+            <div class="conf-sec">
+              <div class="conf-hd"><span class="conf-lbl">Model Confidence</span><span class="conf-val" id="cv">--%</span></div>
+              <div class="conf-track"><div class="conf-fill" id="cf"></div></div>
+            </div>
+            <div class="thr-row">
+              <div class="th" id="th0" style="background:var(--ben-glow);color:var(--ben)">Benign</div>
+              <div class="th" id="th1" style="background:rgba(0,200,120,.09);color:#30c880">L.Benign</div>
+              <div class="th" id="th2" style="background:var(--warn-glow);color:var(--warn)">VUS</div>
+              <div class="th" id="th3" style="background:rgba(255,100,32,.1);color:#ff6020">L.Path.</div>
+              <div class="th" id="th4" style="background:var(--path-glow);color:var(--path)">Pathogenic</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disease -->
+        <div class="card" id="disease-panel">
+          <div class="ch">
+            <div class="ct">🧬 Disease Prediction (AI Model)</div>
+            <span class="cb" style="background:var(--path-glow);color:var(--path)">15-Class DNABERT-2</span>
+          </div>
+          <div id="d-bars"></div>
+          <div class="dna-note" style="margin-top:10px">Disease probabilities predicted by the DNABERT-2 disease classification model across 15 disease categories.</div>
+        </div>
+      </div>
+
+      <!-- Row 2: DNA Viewer -->
+      <div class="card" id="dna-panel">
+        <div class="ch">
+          <div class="ct">DNA Sequence Viewer — Attention Heatmap</div>
+          <div class="dna-legend">
+            <div class="dna-leg-item"><div class="dna-leg-dot" style="background:#22c55e"></div>A</div>
+            <div class="dna-leg-item"><div class="dna-leg-dot" style="background:#ef4444"></div>T</div>
+            <div class="dna-leg-item"><div class="dna-leg-dot" style="background:#f59e0b"></div>G</div>
+            <div class="dna-leg-item"><div class="dna-leg-dot" style="background:#3b82f6"></div>C</div>
+            <div class="dna-leg-item" style="gap:5px"><div style="width:14px;height:8px;border-radius:2px;background:linear-gradient(90deg,rgba(20,20,20,.1),rgba(255,80,0,.7))"></div>Attention</div>
+          </div>
+        </div>
+        <div class="dna-wrap"><canvas id="dna-cv" height="118"></canvas></div>
+        <div class="dna-note">Attention weights extracted from DNABERT-2 final layer · Mutation highlighted in red · Flanking ±64 bp shown</div>
+      </div>
+
+      <!-- Row 3: Gene + Stats + Comparative -->
+      <div class="g3">
+        <!-- Gene Info -->
+        <div class="card" id="gene-panel">
+          <div class="ch"><div class="ct">Gene Information</div></div>
+          <div class="g-sym" id="g-sym">--</div>
+          <div class="g-loc" id="g-loc">--</div>
+          <div class="g-fn" id="g-fn">--</div>
+          <div class="g-tags" id="g-tags"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card" id="stats-panel">
+          <div class="ch"><div class="ct">Variant Statistics</div></div>
+          <div class="sg">
+            <div class="si"><div class="si-lbl">Mutation Type</div><div class="si-val" id="sv-type">--</div><div class="si-sub" id="sv-type-s">--</div></div>
+            <div class="si"><div class="si-lbl">GC Content</div><div class="si-val" id="sv-gc">--%</div><div class="si-sub">flanking ±64 bp</div></div>
+            <div class="si"><div class="si-lbl">Shannon Entropy</div><div class="si-val" id="sv-ent">--</div><div class="si-sub">sequence complexity</div></div>
+            <div class="si"><div class="si-lbl">CpG Context</div><div class="si-val" id="sv-cpg">--</div><div class="si-sub">methylation site</div></div>
+          </div>
+          <div class="divider" style="margin:.7rem 0"></div>
+          <div class="si-lbl" style="margin-bottom:5px">Variant Position</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--text-2)" id="sv-pos">--</div>
+        </div>
+
+        <!-- Comparative -->
+        <div class="card" id="comparative-panel">
+          <div class="ch"><div class="ct">Model Explanation</div></div>
+          <div id="exp-list"></div>
+          <div class="divider" style="margin:.7rem 0"></div>
+          <div class="ct" style="margin-bottom:7px">Similar ClinVar Variants</div>
+          <div id="sim-list"></div>
+          <div class="gene-burden">
+            <div class="burden-label">Known pathogenic variants in <strong id="burden-gene">—</strong></div>
+            <div class="burden-value" id="burden-val">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Radar -->
+      <div class="g2">
+        <div class="card" id="radar-panel">
+          <div class="ch"><div class="ct">Disease Risk Profile — Radar</div></div>
+          <canvas id="radar-chart"></canvas>
+        </div>
+
+        <!-- Batch panel (shown when VCF) -->
+        <div class="card batch-panel" id="batch-panel">
+          <div class="ch">
+            <div class="ct">Batch Analysis</div>
+            <span class="cb" style="background:var(--acc-dim);color:var(--acc)">VCF Mode</span>
+          </div>
+          <div class="batch-summary">
+            <div class="batch-stat"><div class="val" id="batch-total">0</div><div class="lbl">Total</div></div>
+            <div class="batch-stat"><div class="val" id="batch-path" style="color:var(--path)">0</div><div class="lbl">Pathogenic</div></div>
+            <div class="batch-stat"><div class="val" id="batch-genes" style="color:var(--acc)">0</div><div class="lbl">Genes</div></div>
+          </div>
+          <table class="batch-table"><thead><tr>
+            <th>Risk</th><th>Position</th><th>Gene</th><th>Score</th>
+          </tr></thead><tbody id="batch-tbody"></tbody></table>
+          <button id="btn-export-csv">📥 Export CSV</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- About Page (Hidden by default) -->
+    <div class="about-page card" id="about-page" style="display:none; animation: cin .5s ease both;">
+      <div class="ch" style="margin-bottom: 20px;">
+        <div class="ct" style="font-size: 1.4rem;">GenomeScan AI — Documentation & Architecture</div>
+        <button class="btn-az" onclick="toggleAbout()" style="padding: 5px 12px; border-radius: 6px; cursor: pointer;">Close</button>
+      </div>
+      
+      <div class="about-content">
+        <div class="abt-sec">
+          <div class="abt-hd">How to Use the Website</div>
+          <p>Welcome to <strong>GenomeScan AI</strong>, a tool designed to predict the pathogenicity and disease association of genetic variants using state-of-the-art transformer models.</p>
+          <ul>
+            <li><strong>Input:</strong> Enter a genomic coordinate (e.g., Chromosome 17, Position 43094464) and the Ref/Alt alleles in the sidebar. You can also use the <em>Quick Examples</em> to load known variants instantly.</li>
+            <li><strong>Analyze:</strong> Click "Analyze Variant". The system will fetch the surrounding DNA sequence (±64 base pairs) from the GRCh38 reference genome.</li>
+            <li><strong>Results:</strong> The main dashboard will display the Pathogenicity Score (Benign vs. Pathogenic), the Top 5 Disease Associations, the Attention Heatmap on the DNA sequence, and Variant Statistics (Entropy, GC content, etc.).</li>
+          </ul>
+        </div>
+
+        <div class="abt-sec">
+          <div class="abt-hd">Understanding the Outputs</div>
+          <p>The dashboard presents several distinct pieces of analysis:</p>
+          <ul>
+            <li><strong>Pathogenicity Score:</strong> A confidence score from 0 to 100 indicating how damaging the variant is likely to be. It is divided into bands: Benign, Likely Benign, VUS (Variant of Uncertain Significance), Likely Pathogenic, and Pathogenic.</li>
+            <li><strong>Disease Prediction:</strong> The AI predicts which of the 15 supported disease categories (e.g., Cystic Fibrosis, Breast/Ovarian Cancer, Arrhythmia) the variant is most strongly associated with.</li>
+            <li><strong>DNA Sequence Viewer & Attention:</strong> Shows the DNA sequence around the mutation. The heatmap background indicates the model's <em>attention weights</em>. Brighter red areas are where the AI is "looking" most strongly to make its decision.</li>
+            <li><strong>Statistics:</strong> Includes Transition/Transversion types, Shannon Entropy (sequence complexity), GC Content, and CpG Context (methylation hotspots).</li>
+          </ul>
+        </div>
+
+        <div class="abt-sec">
+          <div class="abt-hd">Deep Dive: Backend Model Architecture</div>
+          <p>Our backend operates on a <strong>Dual-Model Pipeline</strong> built entirely around <strong>DNABERT-2</strong>.</p>
+          
+          <div class="abt-sub">1. What is DNABERT-2?</div>
+          <p>Unlike standard language models that read English, DNABERT-2 is a 117-million parameter transformer pre-trained on billions of base pairs of multi-species DNA. It uses Byte Pair Encoding (BPE) to tokenize DNA into meaningful sub-sequences rather than treating it base-by-base. This allows it to learn the grammar and structural motifs of genomics.</p>
+
+          <div class="abt-sub">2. The Dual-Model Approach</div>
+          <p>We fine-tuned the base DNABERT-2 model on the <strong>ClinVar dataset</strong> (a public database of human variations and their health relationships) to create two specialized heads:</p>
+          <ul>
+            <li><strong>Model 1 (Pathogenicity):</strong> A binary classifier (Benign vs. Pathogenic).</li>
+            <li><strong>Model 2 (Disease Categorization):</strong> A 15-class multi-label classifier trained to predict specific phenotypic categories (e.g., Epilepsy, Cardiomyopathy, Blood Disorder).</li>
+          </ul>
+
+          <div class="abt-sub">3. Genomic Context & Biological Priors Enhancement</div>
+          <p>Because raw AI models can be noisy and undertrained on rare variants, our inference pipeline heavily blends the raw neural network output with hardcoded <strong>Biological Priors</strong> to maximize accuracy:</p>
+          <div class="abt-code">
+Score = (0.35 × AI_Raw_Output) + (0.65 × Biological_Context)
+          </div>
+          <p>The <em>Biological Context</em> is calculated dynamically for every variant using:</p>
+          <ul>
+            <li><strong>Gene-Disease Mapping:</strong> We map well-studied genes directly to their diseases (e.g., <em>CFTR</em> → Cystic Fibrosis). The final disease prediction is a blend of 40% raw AI probability and 60% biological prior. This ensures that well-known genes surface the correct disease reliably, while unknown genes fall back completely on the AI's pure sequence analysis.</li>
+            <li><strong>Gene Pathogenicity Prior:</strong> Some genes (like TP53 or BRCA1) are naturally more sensitive to mutations than others. We apply a base risk weight based on the gene.</li>
+            <li><strong>CpG Boost:</strong> A CpG site (Cytosine followed by Guanine) is a known mutation hotspot due to methylation and deamination. If the model detects the mutation is at a CpG site, it slightly boosts the pathogenicity risk.</li>
+            <li><strong>GC Deviation:</strong> We calculate the GC% of the 129-bp window. If it deviates heavily from the human average (~42%), it indicates a highly constrained region, modifying the risk score.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- FAB -->
+<button id="fab" onclick="genReport()">📄 Generate Report</button>
+
+<script src="js/charts.js"></script>
+<script src="js/dna_viewer.js"></script>
+<script src="js/report.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

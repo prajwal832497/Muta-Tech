@@ -1,0 +1,158 @@
+{
+  "BRCA1": {
+    "symbol": "BRCA1", "name": "BRCA1 DNA Repair Associated",
+    "chromosome": "17", "location": "chr17:43,044,295-43,170,245",
+    "function": "Tumor suppressor critical for DNA damage repair via homologous recombination. Maintains genomic stability and regulates cell cycle checkpoints.",
+    "conditions": ["Hereditary Breast Cancer", "Ovarian Cancer Syndrome", "Fanconi Anemia Type S"],
+    "diseases": [
+      {"name": "Breast/Ovarian Cancer", "probability": 0.74, "inheritance": "Autosomal Dominant", "organs": "Breast, Ovaries"},
+      {"name": "Other Hereditary Cancer", "probability": 0.12, "inheritance": "Autosomal Dominant", "organs": "Pancreas, Prostate"},
+      {"name": "Blood Disorder", "probability": 0.06, "inheritance": "Varies", "organs": "Blood"},
+      {"name": "Colorectal Cancer", "probability": 0.05, "inheritance": "Autosomal Dominant", "organs": "Colon"},
+      {"name": "Immune/Skin Disorder", "probability": 0.03, "inheritance": "Varies", "organs": "Skin"}
+    ]
+  },
+  "BRCA2": {
+    "symbol": "BRCA2", "name": "BRCA2 DNA Repair Associated",
+    "chromosome": "13", "location": "chr13:32,315,474-32,399,672",
+    "function": "Involved in repair of chromosomal damage via homologous recombination. Binds RAD51 recombinase.",
+    "conditions": ["Hereditary Breast Cancer", "Ovarian Cancer", "Fanconi Anemia Type D1"],
+    "diseases": [
+      {"name": "Breast/Ovarian Cancer", "probability": 0.68, "inheritance": "Autosomal Dominant", "organs": "Breast, Ovaries"},
+      {"name": "Other Hereditary Cancer", "probability": 0.15, "inheritance": "Autosomal Dominant", "organs": "Pancreas, Prostate"},
+      {"name": "Blood Disorder", "probability": 0.08, "inheritance": "Autosomal Recessive", "organs": "Blood"},
+      {"name": "Colorectal Cancer", "probability": 0.06, "inheritance": "Autosomal Dominant", "organs": "Colon"},
+      {"name": "Immune/Skin Disorder", "probability": 0.03, "inheritance": "Varies", "organs": "Skin"}
+    ]
+  },
+  "TP53": {
+    "symbol": "TP53", "name": "Tumor Protein P53",
+    "chromosome": "17", "location": "chr17:7,668,402-7,687,550",
+    "function": "Guardian of the genome. Master regulator of apoptosis and cell cycle arrest in response to DNA damage and cellular stress.",
+    "conditions": ["Li-Fraumeni Syndrome", "Multiple Tumor Types", "Adrenocortical Carcinoma"],
+    "diseases": [
+      {"name": "Other Hereditary Cancer", "probability": 0.58, "inheritance": "Autosomal Dominant", "organs": "Multiple organs"},
+      {"name": "Colorectal Cancer", "probability": 0.18, "inheritance": "Autosomal Dominant", "organs": "Colon"},
+      {"name": "Breast/Ovarian Cancer", "probability": 0.11, "inheritance": "Autosomal Dominant", "organs": "Breast"},
+      {"name": "Blood Disorder", "probability": 0.08, "inheritance": "Autosomal Dominant", "organs": "Blood"},
+      {"name": "Neuromuscular", "probability": 0.05, "inheritance": "Autosomal Dominant", "organs": "Brain"}
+    ]
+  },
+  "CFTR": {
+    "symbol": "CFTR", "name": "CF Transmembrane Conductance Regulator",
+    "chromosome": "7", "location": "chr7:117,480,025-117,668,666",
+    "function": "Chloride channel protein regulating ion and water transport across epithelial membranes. Essential for mucus hydration.",
+    "conditions": ["Cystic Fibrosis", "CBAVD", "Bronchiectasis"],
+    "diseases": [
+      {"name": "Cystic Fibrosis", "probability": 0.62, "inheritance": "Autosomal Recessive", "organs": "Lungs, Pancreas"},
+      {"name": "Metabolic Disease", "probability": 0.14, "inheritance": "Varies", "organs": "Pancreas"},
+      {"name": "Kidney Disease", "probability": 0.10, "inheritance": "Varies", "organs": "Kidneys"},
+      {"name": "Immune/Skin Disorder", "probability": 0.08, "inheritance": "Varies", "organs": "Skin"},
+      {"name": "Other Hereditary Cancer", "probability": 0.06, "inheritance": "Varies", "organs": "GI tract"}
+    ]
+  },
+  "MLH1": {
+    "symbol": "MLH1", "name": "MutL Homolog 1",
+    "chromosome": "3", "location": "chr3:36,993,350-37,050,845",
+    "function": "DNA mismatch repair protein. Essential for maintaining genomic integrity during DNA replication.",
+    "conditions": ["Lynch Syndrome", "Hereditary Nonpolyposis Colorectal Cancer"],
+    "diseases": [
+      {"name": "Colorectal Cancer", "probability": 0.55, "inheritance": "Autosomal Dominant", "organs": "Colon"},
+      {"name": "Other Hereditary Cancer", "probability": 0.20, "inheritance": "Autosomal Dominant", "organs": "Endometrium, Ovary"},
+      {"name": "Breast/Ovarian Cancer", "probability": 0.12, "inheritance": "Autosomal Dominant", "organs": "Ovaries"},
+      {"name": "Kidney Disease", "probability": 0.08, "inheritance": "Varies", "organs": "Kidney"},
+      {"name": "Blood Disorder", "probability": 0.05, "inheritance": "Varies", "organs": "Blood"}
+    ]
+  },
+  "MSH2": {
+    "symbol": "MSH2", "name": "MutS Homolog 2",
+    "chromosome": "2", "location": "chr2:47,403,067-47,709,834",
+    "function": "DNA mismatch repair protein that recognizes and binds mismatched DNA bases.",
+    "conditions": ["Lynch Syndrome", "Muir-Torre Syndrome"],
+    "diseases": [
+      {"name": "Colorectal Cancer", "probability": 0.52, "inheritance": "Autosomal Dominant", "organs": "Colon"},
+      {"name": "Other Hereditary Cancer", "probability": 0.22, "inheritance": "Autosomal Dominant", "organs": "Multiple"},
+      {"name": "Breast/Ovarian Cancer", "probability": 0.10, "inheritance": "Autosomal Dominant", "organs": "Ovaries"},
+      {"name": "Immune/Skin Disorder", "probability": 0.09, "inheritance": "Varies", "organs": "Skin"},
+      {"name": "Blood Disorder", "probability": 0.07, "inheritance": "Varies", "organs": "Blood"}
+    ]
+  },
+  "LDLR": {
+    "symbol": "LDLR", "name": "Low Density Lipoprotein Receptor",
+    "chromosome": "19", "location": "chr19:11,089,417-11,133,845",
+    "function": "LDL receptor mediating endocytosis of LDL particles. Critical for cholesterol homeostasis.",
+    "conditions": ["Familial Hypercholesterolemia", "Coronary Artery Disease"],
+    "diseases": [
+      {"name": "Cardiomyopathy", "probability": 0.45, "inheritance": "Autosomal Dominant", "organs": "Heart, Vessels"},
+      {"name": "Metabolic Disease", "probability": 0.25, "inheritance": "Autosomal Dominant", "organs": "Liver"},
+      {"name": "Aortic/Connective Tissue", "probability": 0.15, "inheritance": "Varies", "organs": "Aorta"},
+      {"name": "Kidney Disease", "probability": 0.08, "inheritance": "Varies", "organs": "Kidney"},
+      {"name": "Blood Disorder", "probability": 0.07, "inheritance": "Varies", "organs": "Blood"}
+    ]
+  },
+  "SCN5A": {
+    "symbol": "SCN5A", "name": "Sodium Voltage-Gated Channel Alpha 5",
+    "chromosome": "3", "location": "chr3:38,548,062-38,649,667",
+    "function": "Cardiac sodium channel essential for action potential initiation and conduction in the heart.",
+    "conditions": ["Brugada Syndrome", "Long QT Syndrome Type 3", "Sick Sinus Syndrome"],
+    "diseases": [
+      {"name": "Arrhythmia", "probability": 0.60, "inheritance": "Autosomal Dominant", "organs": "Heart"},
+      {"name": "Cardiomyopathy", "probability": 0.18, "inheritance": "Autosomal Dominant", "organs": "Heart"},
+      {"name": "Aortic/Connective Tissue", "probability": 0.10, "inheritance": "Varies", "organs": "Vasculature"},
+      {"name": "Neuromuscular", "probability": 0.07, "inheritance": "Varies", "organs": "Nerves"},
+      {"name": "Metabolic Disease", "probability": 0.05, "inheritance": "Varies", "organs": "Multiple"}
+    ]
+  },
+  "MYH7": {
+    "symbol": "MYH7", "name": "Myosin Heavy Chain 7",
+    "chromosome": "14", "location": "chr14:23,412,737-23,435,754",
+    "function": "Beta-myosin heavy chain. Major contractile protein of the cardiac ventricle.",
+    "conditions": ["Hypertrophic Cardiomyopathy", "Dilated Cardiomyopathy", "Laing Distal Myopathy"],
+    "diseases": [
+      {"name": "Cardiomyopathy", "probability": 0.65, "inheritance": "Autosomal Dominant", "organs": "Heart"},
+      {"name": "Neuromuscular", "probability": 0.15, "inheritance": "Autosomal Dominant", "organs": "Skeletal muscle"},
+      {"name": "Arrhythmia", "probability": 0.10, "inheritance": "Varies", "organs": "Heart"},
+      {"name": "Aortic/Connective Tissue", "probability": 0.06, "inheritance": "Varies", "organs": "Connective tissue"},
+      {"name": "Metabolic Disease", "probability": 0.04, "inheritance": "Varies", "organs": "Multiple"}
+    ]
+  },
+  "RB1": {
+    "symbol": "RB1", "name": "RB Transcriptional Corepressor 1",
+    "chromosome": "13", "location": "chr13:48,303,747-48,481,890",
+    "function": "Tumor suppressor that regulates cell cycle progression. Key gatekeeper preventing uncontrolled cell division.",
+    "conditions": ["Retinoblastoma", "Osteosarcoma"],
+    "diseases": [
+      {"name": "Other Hereditary Cancer", "probability": 0.55, "inheritance": "Autosomal Dominant", "organs": "Eye, Bone"},
+      {"name": "Eye Disease", "probability": 0.25, "inheritance": "Autosomal Dominant", "organs": "Eye"},
+      {"name": "Blood Disorder", "probability": 0.10, "inheritance": "Varies", "organs": "Blood"},
+      {"name": "Neuromuscular", "probability": 0.06, "inheritance": "Varies", "organs": "Brain"},
+      {"name": "Immune/Skin Disorder", "probability": 0.04, "inheritance": "Varies", "organs": "Skin"}
+    ]
+  },
+  "KRAS": {
+    "symbol": "KRAS", "name": "KRAS Proto-Oncogene GTPase",
+    "chromosome": "12", "location": "chr12:25,204,789-25,250,936",
+    "function": "GTPase involved in RAS/MAPK signaling. Regulates cell proliferation, differentiation, and survival.",
+    "conditions": ["Noonan Syndrome", "Multiple Cancer Types"],
+    "diseases": [
+      {"name": "Other Hereditary Cancer", "probability": 0.50, "inheritance": "Autosomal Dominant", "organs": "Multiple"},
+      {"name": "Colorectal Cancer", "probability": 0.20, "inheritance": "Somatic", "organs": "Colon"},
+      {"name": "Metabolic Disease", "probability": 0.12, "inheritance": "Varies", "organs": "Multiple"},
+      {"name": "Cardiomyopathy", "probability": 0.10, "inheritance": "Varies", "organs": "Heart"},
+      {"name": "Blood Disorder", "probability": 0.08, "inheritance": "Varies", "organs": "Blood"}
+    ]
+  },
+  "_default": {
+    "symbol": "UNKNOWN", "name": "Unknown Gene",
+    "chromosome": "?", "location": "Unknown",
+    "function": "Gene function not found in knowledge base. Variant may be intergenic or in a less-characterized gene.",
+    "conditions": ["Unknown"],
+    "diseases": [
+      {"name": "Other Hereditary Cancer", "probability": 0.20, "inheritance": "Unknown", "organs": "Unknown"},
+      {"name": "Metabolic Disease", "probability": 0.15, "inheritance": "Unknown", "organs": "Unknown"},
+      {"name": "Blood Disorder", "probability": 0.12, "inheritance": "Unknown", "organs": "Unknown"},
+      {"name": "Neuromuscular", "probability": 0.10, "inheritance": "Unknown", "organs": "Unknown"},
+      {"name": "Immune/Skin Disorder", "probability": 0.08, "inheritance": "Unknown", "organs": "Unknown"}
+    ]
+  }
+}
